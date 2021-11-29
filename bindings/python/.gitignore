@@ -2,3 +2,6 @@
 /ufal/
 nametag_python.cpp
 ufal_nametag.so
+/build/
+/dist/
+/ufal.nametag.egg-info/

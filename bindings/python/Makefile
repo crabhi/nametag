@@ -14,11 +14,14 @@ BINDING_C_FLAGS+=$(if $(PYTHON_INCLUDE),,$(error PYTHON_INCLUDE must be set to t
 BINDING_C_FLAGS+=$(call include_dir,$(PYTHON_INCLUDE))
 BINDING_C_FLAGS+=$(if $(filter %-gcc %-clang,$(PLATFORM)),-w)
 
-all: $(BINDING_MODULE)
+all: $(BINDING_MODULE) dist/ufal.nametag-1.1.2.1-cp39-cp39-linux_x86_64.whl
 
 $(call dynobj,nametag_python):C_FLAGS+=$(BINDING_C_FLAGS)
 $(BINDING_MODULE): $(call dynobj,nametag_python) $(BINDING_NAMETAG_OBJECTS)
 	$(call link_dynlib,$@,$^ $(BINDING_C_FLAGS), $(BINDING_LD_FLAGS) $(call version_script,nametag_python.map))
+
+dist/ufal.nametag-1.1.2.1-cp39-cp39-linux_x86_64.whl: nametag_python.cpp
+	python3 setup.py bdist_wheel
 
 nametag_python.cpp: nametag_python.i ../common/nametag.i
 	@$(call mkdir,ufal)
